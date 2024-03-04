@@ -1,6 +1,4 @@
 import java.util.Random;
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
 
 public class Salaire {
 
@@ -21,17 +19,12 @@ public class Salaire {
     }
 
     public void setPrime(Double prime) {
-        checkNotNull(prime,"La prime ne peut pas etre nulle");
         this.prime = prime*100/this.anciennete;
     }
     public void setSalaire(Double salaire) {
-        checkNotNull(salaire,"Le salaire ne peut pas etre nul");
-        checkArgument(salaire<=0,"Le salaire doit etre positif");
-        checkArgument(salaire>=10000,"Le salaire ne doit pas dépasser 10000€");
         this.salaire = salaire*0.7;
     }
     public void setAnciennete(Integer anciennete) {
-        checkNotNull(anciennete,"L'ancienneté ne peut pas etre nulle");
         this.anciennete = anciennete;
     }
     public String getNom() {

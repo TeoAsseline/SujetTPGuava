@@ -1,11 +1,5 @@
-import com.google.common.base.Function;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.Ordering;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
 import java.util.ArrayList;
 import java.util.List;
-import static com.google.common.collect.Lists.newArrayList;
 
 public class Entreprise {
     private String nom;
@@ -30,30 +24,5 @@ public class Entreprise {
     }
     public void addSalaire(Salaire salaire) {
         this.salaires.add(salaire);
-    }
-    public List<Salaire> RangerSalairesOrdreDecroissant() {
-        List<Salaire> salairescopy = newArrayList(this.salaires);
-        Ordering<Salaire> ordering = Ordering
-                .natural()
-                .onResultOf(new Function<Salaire, Comparable>() {
-                    @Override
-                    public Comparable apply(Salaire salaire) {
-                        return salaire.getSalaire();
-                    }
-                }).reverse();
-        salairescopy.sort(ordering);
-        return salairescopy;
-    }
-    public List<Salaire> RecupererSalaireSuperieur1500() {
-        List<Salaire> salairesSup1500 = Lists.newArrayList(
-                Collections2.filter(this.salaires, salaire -> salaire.getSalaire() > 1500));
-        return salairesSup1500;
-    }
-    public Multimap<String,Double> RecupererSalaireParEmploye() {
-        Multimap<String,Double> salairesParEmploye = com.google.common.collect.ArrayListMultimap.create();
-        for (Salaire salaire : salaires) {
-            salairesParEmploye.put(salaire.getNom()+" "+salaire.getPrenom(), salaire.getSalaire());
-        }
-        return salairesParEmploye;
     }
 }
