@@ -2,9 +2,7 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import org.junit.jupiter.api.*;
-
 import java.util.Arrays;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class OrganiserLesSalairesTest {
@@ -25,7 +23,6 @@ public class OrganiserLesSalairesTest {
         this.entreprise = new Entreprise("Doe's company","1 rue de la paix","01 02 03 04 05","doe@gmail.com");
         this.entreprise.addSalaires(Lists.newArrayList(salaire1, salaire2, salaire3));
     }
-
     @AfterEach
     //vider les salaires
     void tearDown() {
@@ -35,28 +32,41 @@ public class OrganiserLesSalairesTest {
     @Test
     public void salairetropgrand() throws Exception{
         assertThrows(IllegalArgumentException.class, () -> {
-            this.entreprise.getSalaires().getFirst().setSalaire(10001);
+            this.entreprise.getSalaires().getFirst().setSalaire(10001.0);
         });
     }
-
     @Test
     public void salairevide() throws Exception{
         assertThrows(IllegalArgumentException.class, () -> {
-            this.entreprise.getSalaires().getFirst().setSalaire(0);
+            this.entreprise.getSalaires().getFirst().setSalaire(0.0);
         });
     }
-
     @Test
     public void salairecorrect() throws Exception{
         double salaire = 1450*0.7;
         assertEquals(salaire, this.entreprise.getSalaires().getFirst().getSalaire());
     }
-
+    @Test
+    public void primesalaireanciennetenull(){
+        assertThrows(NullPointerException.class, () -> {
+            this.entreprise.getSalaires().getFirst().setPrime(null);
+        });
+        assertThrows(NullPointerException.class, () -> {
+            this.entreprise.getSalaires().getFirst().setAnciennete(null);
+        });
+        assertThrows(NullPointerException.class, () -> {
+            this.entreprise.getSalaires().getFirst().setSalaire(null);
+        });
+    }
+    @Test
+    public void primecoorect(){
+        this.entreprise.getSalaires().getFirst().setPrime(100.0);
+        assertEquals(100*100/3, Math.round(this.entreprise.getSalaires().getFirst().getPrime()));
+    }
     @Test
     public void salairesRangeParMontant() throws Exception{
         assertEquals(Arrays.asList(salaire3, salaire2, salaire1) , this.entreprise.RangerSalairesOrdreDecroissant());
     }
-
     @Test
     public void salairesAvecNom(){
         Multimap<String,Double> lessalaires = ArrayListMultimap.create();
@@ -65,11 +75,9 @@ public class OrganiserLesSalairesTest {
         lessalaires.put("Doe Jim", 3540.0*0.7);
         assertEquals(lessalaires, this.entreprise.RecupererSalaireParEmploye());
     }
-
     @Test
     public void salairesSuperieur1500(){
         assertEquals(Arrays.asList(
                 salaire3), this.entreprise.RecupererSalaireSuperieur1500());
     }
-
 }
